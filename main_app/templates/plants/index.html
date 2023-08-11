@@ -5,12 +5,15 @@
 
 {% for plant in plants %}
     <div class="card">
-        <div class="card-content">
-            <span class="card-title">{{ plant.name }}</span>
-            <p>Breed: {{ plant.type }} </p>
-            <p>Description: {{ plant.description }}</p>
-            <p>Height(cm): {{ plant.height }} </p>
-        </div>
+        <a href="{% url 'detail' plant.id %}">
+            <div class="card-content">
+                <span class="card-title">{{ plant.givenName }}</span>
+                <p>Plant Type: {{ plant.plantName }} </p>
+                <p>Description: {{ plant.description }}</p>
+                <p>Current Pot Size: {{ plant.potSize }} </p>
+                <p>Height(cm): {{ plant.height }} </p>
+            </div>
+        </a>
     </div>
 {% endfor %}
 

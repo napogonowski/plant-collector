@@ -9,6 +9,14 @@ nav{
 main {
     flex: 1 0 auto;
 }
+.navbar-fixed{
+    @extend .green, .darken-1:
+}
+.page-footer{
+    @extend .green:
+
+}
+
 
 footer.page-footer {
     padding-top: 0;
