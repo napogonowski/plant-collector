@@ -12,13 +12,9 @@ main {
 .navbar-fixed{
     @extend .green, .darken-1:
 }
-.page-footer{
-    @extend .green:
-
-}
-
 
 footer.page-footer {
     padding-top: 0;
     text-align: right;
+    @extend .green:
 }
