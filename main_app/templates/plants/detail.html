@@ -1,19 +1,110 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="card">
-    <div class="card-content">
-        <span class="card-title">{{ plant.givenName }}</span>
-        <p><strong>Plant Type:</strong> {{ plant.plantName }} </p>
-        <p><strong>Description:</strong> {{ plant.description|linebreaks }}</p>
-        <p><strong>Current Pot Size:</strong> {{ plant.potSize }} </p>
-        <p><strong>Height(cm):</strong> {{ plant.height }} </p>
+<h1>Plant Details</h1>
+<div class="row">
+    <div class="col s6">
+        <div class="card">
+            <div class="card-content black-text">
+                <span class="card-title">{{ plant.givenName }}</span><hr>
+                <p><strong>Plant Type:</strong> {{ plant.plantName }} </p>
+                <p><strong>Description:</strong> {{ plant.description|linebreaks }}</p>
+                <p><strong>Current Pot Size:</strong> {{ plant.potSize }} </p>
+                <p><strong>Height(cm):</strong> {{ plant.height }} </p>
+            </div>
+            <div class="card-action">
+                <a class="waves-effect waves-light btn" href="{% url 'plants_update' plant.id %}">Edit</a>
+                <a  class=" waves-effect waves-light btn" href="{% url 'plants_delete' plant.id %}">Delete</a>
+            </div>
+        </div>
     </div>
-    <div class="card-action">
-        <a class="btn" href="{% url 'plants_update' plant.id %}">Edit</a>
-        <a  class="btn" href="{% url 'plants_delete' plant.id %}">Delete</a>
+    <div class="col s6 ">
+        <form action="{% url 'add_feeding' plant.id %}" method="POST">
+            {% csrf_token %}
+            <!-- Render the inputs -->
+            {{ feeding_form.as_p }}
+            <input type="submit" class="waves-effect waves-light btn" value="Add">
+        </form>
+        <br>
+        {% if plant.fed_for_the_week %}
+            <div class="card-panel teal-text center-align">{{plant.givenName}} has been this week</div>
+        {% else %}
+            <div class="card-panel red-text center-align">{{plant.givenName}} might be thirsty</div>
+        {% endif %}
+        <table class="striped ">
+            <thead>
+            <tr><th>Date</th><th>Feed Type:</th></tr>
+            </thead>
+            <tbody>
+            {% for feeding in plant.feeding_set.all %}
+                <tr>
+                <td>{{feeding.date}}</td>
+                <td>{{feeding.get_feed_display}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-    
+    <!-- New Markup Above -->
 </div>
-
+<hr>
+<div class="row">
+    <div class="col s6">
+        <h3><span class="white-text">{{ plant.givenName }}'s</span> Extras</h3>
+        {% if plant.extras.count %}
+        {% for extra in plant.extras.all %}
+            <div class="card">
+            <div class="card-content">
+                <span class="card-title">
+                    <p><strong>Extra Name:</strong> {{ extra.name }} </p>
+                </span>
+                <p><strong>Description:</strong> {{ extra.description|linebreaks }}</p>
+                <div class="card-action">
+                    <form action="{% url 'disassoc_extra' plant.id extra.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">remove</button>
+                    </form>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+        {% else %}
+        <h5>No Extras 🌵</h5>
+        {% endif %}
+    </div>
+    <div class="col s6">
+        <h3>Available Extras</h3>
+        {% if extras.count %}
+            {% for extra in extras.all %}
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">
+                        <p><strong>Extra Name:</strong> {{ extra.name }} </p>
+                    </span>
+                    <p><strong>Description:</strong> {{ extra.description|linebreaks }}</p>
+                </div>
+                <div class="card-action">
+                <form action="{% url 'assoc_extra' plant.id extra.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Add</button>
+                </form>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <h5>{{plant.givenName}} Already Has All Extras Available</h5>
+        {% endif %}
+    </div>  
+</div>
+<script>
+    const dateEl = document.getElementById('id_date');
+    M.Datepicker.init(dateEl, {
+        format: "yyyy-mm-dd",
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true
+    });
+    const selectEl = document.getElementById('id_feed');
+    M.FormSelect.init(selectEl);
+</script>
 {% endblock %}

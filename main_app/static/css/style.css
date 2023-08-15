@@ -2,19 +2,82 @@ body {
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background: linear-gradient(to right, rgb(252, 74, 26), rgb(247, 183, 51));
+}
+h1, label, nav, input, .about-content {
+    color: #f8f8ff;
+}
+h1{
+    font-size: 6rem;
+    padding: 3.7rem;
+    letter-spacing: 0.5rem;
+}
+.title{
+    letter-spacing: 2rem;
+    font-size: 12rem;
+    margin-top: 12rem;
+    padding: 70px 0;
+}
+.about-content{
+    text-align: center;
+}
+.party-thyme{
+    margin-top: 6rem;
+}
+.catus{
+    letter-spacing: 2.5rem;
+    margin-top: 5rem;
+}
+a{
+    color: black;
+}
+
+label{
+    font-size: 2rem;
+    text-decoration-line: underline;
+    text-decoration-thickness: 3px;
+    margin-bottom: 1rem;
+}
+input[type="submit"] {
+    font-size: 2.5rem;  
+    /* margin-top: 1rem; */
+}
+
+input[type="text"], textarea, [type='number'] {
+    background: #000 !important;
+}
+
+form{
+    font-size: 1.5rem;
+}
+.btn{
+    font-size: 1.3rem;
+    padding: 10, 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+
+.card{
+    background: linear-gradient(109.6deg, rgb(253, 199, 141) 11.3%, rgb(249, 143, 253) 100.2%);
 }
 nav{
-    background-color: #006400;  
+    font-size: 4rem;
 }
+
+nav, footer.page-footer{
+    background: linear-gradient(-225deg, #2CD8D5 0%, #C5C1FF 56%, #FFBAC3 100%);   
+}
+
 main {
     flex: 1 0 auto;
 }
-.navbar-fixed{
-    @extend .green, .darken-1:
-}
 
 footer.page-footer {
-    padding-top: 0;
-    text-align: right;
-    @extend .green:
+    padding-top: 0.5rem;
+    text-align: center;
 }

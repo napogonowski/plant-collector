@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Plant List</h1>
+<h1 class="white-text"  >Plant List</h1>
 
 {% for plant in plants %}
-    <div class="card">
+    <div class="card green darken-4">
         <a href="{% url 'detail' plant.id %}">
-            <div class="card-content">
-                <span class="card-title">{{ plant.givenName }}</span>
+            <div class="card-content text-white">
+                <span class="card-title">{{ plant.givenName }}</span><br>
                 <p>Plant Type: {{ plant.plantName }} </p>
                 <p>Description: {{ plant.description }}</p>
                 <p>Current Pot Size: {{ plant.potSize }} </p>
