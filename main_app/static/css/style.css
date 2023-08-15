@@ -43,8 +43,9 @@ input[type="submit"] {
     /* margin-top: 1rem; */
 }
 
-input[type="text"], textarea, [type='number'] {
-    background: #000 !important;
+input[type="text"], textarea, input[type='number']{
+    background: rgba(123, 115, 115, 0.2) !important;
+    
 }
 
 form{
