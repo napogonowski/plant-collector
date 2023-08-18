@@ -6,7 +6,7 @@
     <div class="col s6">
         <div class="card">
             <div class="card-content black-text">
-                <span class="card-title">{{ plant.givenName }}</span><hr>
+                <span class="card-title">{{ plant.givenName }}</span><hr class="line">
                 <p><strong>Plant Type:</strong> {{ plant.plantName }} </p>
                 <p><strong>Description:</strong> {{ plant.description|linebreaks }}</p>
                 <p><strong>Current Pot Size:</strong> {{ plant.potSize }} </p>
@@ -33,7 +33,7 @@
         {% endif %}
         <table class="striped ">
             <thead>
-            <tr><th>Date</th><th>Feed Type:</th></tr>
+            <tr><th>Date:</th><th>Feed Type:</th></tr>
             </thead>
             <tbody>
             {% for feeding in plant.feeding_set.all %}
@@ -47,7 +47,7 @@
     </div>
     <!-- New Markup Above -->
 </div>
-<hr>
+<hr class="page-break">
 <div class="row">
     <div class="col s6">
         <h3><span class="white-text">{{ plant.givenName }}'s</span> Extras</h3>

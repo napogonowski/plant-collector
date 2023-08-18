@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Plant, Extra
 from .forms import FeedingForm
 
@@ -14,13 +18,15 @@ def about(request):
     return render(request, 'about.html')
 
 
+@login_required
 def plants_index(request):
-    plants = Plant.objects.all()
+    plants = Plant.objects.filter(user=request.user)
     return render(request, 'plants/index.html', {
         'plants': plants
     })
 
 
+@login_required
 def plants_detail(request, plant_id):
     plant = Plant.objects.get(id=plant_id)
     # create list of extras id the plant does have
@@ -34,21 +40,26 @@ def plants_detail(request, plant_id):
     })
 
 
-class PlantCreate(CreateView):
+class PlantCreate(LoginRequiredMixin, CreateView):
     model = Plant
     fields = ['givenName', 'plantName', 'description', 'potSize', 'height']
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
-class PlantUpdate(UpdateView):
+
+class PlantUpdate(LoginRequiredMixin, UpdateView):
     model = Plant
     fields = '__all__'
 
 
-class PlantDelete(DeleteView):
+class PlantDelete(LoginRequiredMixin, DeleteView):
     model = Plant
     success_url = '/plants'
 
 
+@login_required
 def add_feeding(request, plant_id):
     print("Roads ?")
     form = FeedingForm(request.POST)
@@ -61,38 +72,54 @@ def add_feeding(request, plant_id):
     print(form.errors)
     return redirect('detail', plant_id=plant_id)
 
-# request post . date
-# get exisiting string, spit on dash - reverse - put it back together
 
-
-class ExtraList(ListView):
+class ExtraList(LoginRequiredMixin, ListView):
     model = Extra
 
 
-class ExtraDetail(DetailView):
+class ExtraDetail(LoginRequiredMixin, DetailView):
     model = Extra
 
 
-class ExtraCreate(CreateView):
+class ExtraCreate(LoginRequiredMixin, CreateView):
     model = Extra
     fields = '__all__'
 
 
-class ExtraUpdate(UpdateView):
+class ExtraUpdate(LoginRequiredMixin, UpdateView):
     model = Extra
     fields = ['name', 'description']
 
 
-class ExtraDelete(DeleteView):
+class ExtraDelete(LoginRequiredMixin, DeleteView):
     model = Extra
     success_url = '/extras'
 
 
+@login_required
 def assoc_extra(request, plant_id, extra_id):
     Plant.objects.get(id=plant_id).extras.add(extra_id)
     return redirect('detail', plant_id=plant_id)
 
 
+@login_required
 def disassoc_extra(request, plant_id, extra_id):
     Plant.objects.get(id=plant_id).extras.remove(extra_id)
     return redirect('detail', plant_id=plant_id)
+
+
+def signup(request):
+    error_message = ''
+    form = UserCreationForm(request.POST)
+    if request.method == "POST":
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - please try again'
+    context = {
+        'form': form,
+        'error_message': error_message
+    }
+    return render(request, 'registration/signup.html', context)

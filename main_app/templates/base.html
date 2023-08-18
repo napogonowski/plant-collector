@@ -15,14 +15,20 @@
         <nav>
         <div class="nav-wrapper">
             <ul>
-                <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Plant Collector</a></li>
+                <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp; Unbeleafable</a></li>
             </ul>
             <ul class="right">
                 <li class="nav-el"><a href="{% url 'about' %}">🌵 About</a></li>
-                <li class="nav-el"><a href="{% url 'extras_create' %}">🌵 Add an Extra</a></li>
-                <li class="nav-el"><a href="{% url 'plants_create' %}">🌵 Add a Plant</a></li>
-                <li class="nav-el"><a href="{% url 'extras_index' %}">🌵 View all Extras</a></li>
-                <li class="nav-el"><a href="{% url 'index' %}">🌵 View All My Plants</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-el"><a href="{% url 'extras_create' %}">🌵 Add an Extra</a></li>
+                    <li class="nav-el"><a href="{% url 'plants_create' %}">🌵 Add a Plant</a></li>
+                    <li class="nav-el"><a href="{% url 'extras_index' %}">🌵 View all Extras</a></li>
+                    <li class="nav-el"><a href="{% url 'index' %}">🌵 View All My Plants</a></li>
+                    <li class="nav-el"><a href="{% url 'logout' %}">🌵 Log Out</a></li>
+                {% else %}
+                    <li class="nav-el"><a href="{% url 'signup' %}">🌵 Sign Up</a></li>
+                    <li class="nav-el"><a href="{% url 'login' %}">🌵 Log In</a></li>
+                {% endif %}
             </ul>
         </div>
         </nav>
@@ -34,7 +40,7 @@
     <footer class="page-footer">
         <div class="container">
             <div><h6><strong>🌵 Support Plant Parenthood! 🌵</strong></h6></div>
-            <div>All Rights Reserved, &copy; 2023 Unbeleafable</div>
+            <div>All Rights Reserved,  2023 Unbeleafable &copy</div>
         </div>
     </footer>
 </body>

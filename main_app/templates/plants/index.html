@@ -4,7 +4,7 @@
 <h1 class="white-text"  >Plant List</h1>
 
 {% for plant in plants %}
-    <div class="card green darken-4">
+    <div class="card">
         <a href="{% url 'detail' plant.id %}">
             <div class="card-content text-white">
                 <span class="card-title">{{ plant.givenName }}</span><br>
